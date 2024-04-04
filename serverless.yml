@@ -3,6 +3,9 @@ service: serverless-image-upload
 frameworkVersion: '3'
 
 plugins:
+  - 'serverless-plugin-typescript'
+  - serverless-plugin-optimize
+  - serverless-offline
 
 provider:
   name: aws
@@ -11,7 +14,7 @@ provider:
 
 functions:
   api:
-    handler: dist/lambda.handler
+    handler: src/lambda.handler
     events:
       - http:
           method: any
