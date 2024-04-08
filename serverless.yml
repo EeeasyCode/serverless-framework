@@ -6,11 +6,25 @@ plugins:
   - 'serverless-plugin-typescript'
   - serverless-plugin-optimize
   - serverless-offline
+  - serverless-ignore
+
+apiGateway:
+  binaryMediaTypes:
+    - 'multipart/form-data'
+    - 'image/*'
 
 provider:
   name: aws
   region: ap-northeast-2
   runtime: nodejs20.x
+package:
+  exclude:
+    - .git/**
+    - src/**
+    - test/**
+    - e2e/**
+    - nodemon.json
+    - README.md
 
 functions:
   api:
