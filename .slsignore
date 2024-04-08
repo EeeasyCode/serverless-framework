@@ -1,0 +1,9 @@
+.git/**
+src/**
+test/**
+e2e/**
+nodemon.json
+README.md
+
+.env
+env/\*
