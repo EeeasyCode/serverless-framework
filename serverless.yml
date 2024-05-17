@@ -1,0 +1,64 @@
+service: image-server
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-offline
+
+custom:
+  common: ${file(config/common.js)}
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ${self:custom.common.region}
+  stage: dev
+  # Provide permissions for this service to manipulate S3.
+  apiGateway:
+    binaryMediaTypes:
+      - "multipart/form-data"
+      - "image/*"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:PutObject"
+            - "s3:GetObject"
+          Resource:
+            - "arn:aws:s3:::${self:custom.common.service2_bucket}/*"
+            - "arn:aws:s3:::${self:custom.common.service1_bucket}/*"
+        - Effect: "Allow"
+          Action:
+            - "s3:ListBucket"
+          Resource: "arn:aws:s3:::*"
+
+# Expose function to public API for POST requests.
+functions:
+  uploadImage:
+    handler: uploadImage/index.handler
+    timeout: 30
+    events:
+      - http:
+          path: uploadImage
+          method: post
+          cors: ${self:custom.common.cors}
+
+  resizeImage:
+    handler: resizeImage/index.handler
+    events:
+      - http:
+          path: resizeImage
+          method: get
+
+# Give service access to the specific S3 bucket.
+resources:
+  Resources:
+    service2UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.common.service2_bucket}
+    service1UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.common.service1_bucket}
