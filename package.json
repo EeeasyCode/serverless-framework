@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1162.0",
+    "busboy": "^0.3.1",
+    "dotenv": "^16.0.1",
+    "s3-files": "^2.0.3",
+    "s3-upload-stream": "^1.0.7",
+    "s3-zip": "^3.2.1"
+  },
+  "devDependencies": {
+    "serverless-offline": "^9.3.1",
+    "serverless-prune-plugin": "^2.0.1"
+  }
+}

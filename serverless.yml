@@ -1,0 +1,67 @@
+service: file-server
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin
+
+custom:
+  prune:
+    automatic: true
+    number: 5
+  common: ${file(config/sls/common.js)}
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ${self:custom.common.region}
+  stage: dev
+  # Provide permissions for this service to manipulate S3.
+  apiGateway:
+    binaryMediaTypes:
+      - "multipart/form-data"
+
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:PutObject"
+            - "s3:GetObject"
+            - "s3:ListBucket"
+
+          Resource:
+            - "arn:aws:s3:::${self:custom.common.A_bucket}/*"
+            - "arn:aws:s3:::${self:custom.common.B_bucket}/*"
+
+# Expose function to public API for POST requests.
+functions:
+  downloadZip:
+    handler: uploadFile/zipper.handler
+    events:
+      - http:
+          path: zip
+          method: post
+          cors: ${self:custom.common.cors}
+
+  uploadFile:
+    handler: uploadFile/index.handler
+    events:
+      - http:
+          path: uploadFile
+          method: post
+          cors: ${self:custom.common.cors}
+
+# Give service access to the specific S3 bucket.
+
+resources:
+  Resources:
+    HSMUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.common.HSM_bucket}
+    AONUploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.common.AON_bucket}
