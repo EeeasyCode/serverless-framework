@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "coolsms-node-sdk": "^2.0.1",
+    "dayjs": "^1.11.5",
+    "dotenv": "^16.0.1",
+    "node-coolsms": "^0.0.1",
+    "serverless-deployment-bucket": "^1.6.0",
+    "serverless-offline": "^9.0.0"
+  },
+  "devDependencies": {
+    "serverless-prune-plugin": "^2.0.1",
+    "serverless-webpack": "^5.8.0",
+    "webpack": "^5.74.0",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

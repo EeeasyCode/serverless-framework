@@ -1,0 +1,96 @@
+service: notification-server
+
+frameworkVersion: "3"
+
+custom:
+  webpack:
+    webpackConfig: "./webpack.config.js"
+    includeModules: true
+
+package:
+  exclude:
+    - node_modules/**
+  include:
+    - node_modules/node-fetch/**
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-offline
+  - serverless-prune-plugin
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  lambdaHashingVersion: 20201221
+  role: arn:aws:iam::427390360776:role/lambda-sqs
+  stage: dev
+  region: ap-northeast-2
+  stackName: notification-server
+  deploymentBucket:
+    name: deploy-notification-server
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "sns:*"
+      Resource:
+        - !Ref MySnsTopic
+    - Effect: Allow
+      Action:
+        - "sqs:*"
+      Resource:
+        - !Ref sendKakaoQueue
+
+functions:
+  SQSsendKakao:
+    name: SQSsendKakao-dev
+    handler: sqs/sendKakao.handler
+
+  publisher:
+    name: publisher-lambda-dev
+    handler: sns/publisher.handler
+    memorySize: 256
+    timeout: 10
+    events:
+      - http:
+          path: publisher
+          method: post
+          cors: true
+resources:
+  Resources:
+    # Define the SQS queue
+    sendKakaoQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: sendKakaoQueue-dev
+
+    # Define the SNS topic
+    MySnsTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        # Subscribes the SQS queue to the SNS topic
+        TopicName: sns-topic-dev
+        Subscription:
+          - Protocol: sqs
+            Endpoint: !GetAtt sendKakaoQueue.Arn
+
+    # Policy allows SNS to publish to this SQS queue
+
+    sendKakaoQueuePolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: "Allow SNS publish to SQS"
+              Effect: Allow
+              Principal:
+                Service: "sns.amazonaws.com"
+              Resource: !GetAtt sendKakaoQueue.Arn
+              Action: SQS:*
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref MySnsTopic
+
+        Queues:
+          - Ref: sendKakaoQueue
