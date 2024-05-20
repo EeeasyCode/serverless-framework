@@ -1,0 +1,115 @@
+frameworkVersion: "3"
+service: my-chat-lambda
+app: backend
+useDotenv: true
+provider:
+  name: aws
+  runtime: nodejs20.x
+  deploymentMethod: direct
+  versionFunctions: false
+  iam:
+    role: DefaultRole
+  httpApi:
+    cors: true
+  stage: ${env:STAGE, "dev"}
+  tags:
+    Service: ${self:service}
+    Environment: ${env:STAGE, "dev"}
+  stackTags:
+    Service: ${self:service}
+    Environment: ${env:STAGE, "dev"}
+  region: ${opt:region, "ap-northeast-2"}
+  stackName: ${self:service}-${env:STAGE, "dev"}-${env:VER, "1"}-serverless
+  timeout: 29 #api gateway를 거칠 경우 lambda의 max
+  environment:
+    service: ${self:service}
+    version: ${env:VER, "1"}
+    stage: ${env:STAGE, "dev"}
+    region: ${opt:region, "ap-northeast-2"}
+    app: ${self:app}
+    api_gateway_id:
+      Ref: HttpApi
+    socket_api_gateway_id:
+      Ref: WebsocketsApi
+  deploymentBucket:
+    name: ${aws:accountId}-serverless-deploys
+    maxPreviousDeploymentArtifacts: 5
+    blockPublicAccess: true
+  deploymentPrefix: ${self:service}-${env:STAGE, "dev"}-${env:VER, "1"}-backend
+plugins:
+  - serverless-deployment-bucket
+
+resources:
+  Resources:
+    DefaultRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:app}-${env:STAGE, "dev"}-${env:VER, "1"}-DefaultLambdaExcutionRole
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonS3FullAccess
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        Policies:
+          - PolicyName: myPolicyName
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:*
+                    - ssm:*
+                    - execute-api:*
+                    - sqs:*
+                  Resource: "*"
+    chatappChatMessages:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${env:STAGE, "dev"}-chat-messages-${env:VER, "1"}
+        AttributeDefinitions:
+          - AttributeName: room_id
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        KeySchema:
+          - AttributeName: room_id
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
+        StreamSpecification:
+          StreamViewType: "NEW_AND_OLD_IMAGES"
+    chatappChatUserlist:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${env:STAGE, "dev"}-chat-userlist-${env:VER, "1"}
+        AttributeDefinitions:
+          - AttributeName: connection_id
+            AttributeType: S
+          - AttributeName: room_id
+            AttributeType: S
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connection_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: room_id-user_id-index
+            KeySchema:
+              - AttributeName: room_id
+                KeyType: HASH
+              - AttributeName: user_id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+custom:
+
+functions:

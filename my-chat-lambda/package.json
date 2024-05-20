@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    
+    "serverless-deployment-bucket": "^1.5.2",
+    "serverless": "3",
+    "serverless-plugin-resource-tagging": "^1.1.1",
+    "slsberry-tester": "^0.0.1",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.484.0",
+		"@aws-sdk/client-dynamodb": "^3.478.0",
+    "@aws-sdk/lib-dynamodb": "^3.478.0"
+  },
+  "dependencies": {
+    "moment": "^2.29.1",
+    "slsberry": "^0.0.55"
+  },
+  "name": "demo-serverless-chat-backend",
+  "scripts": {
+    "test": "npx jest --env=node",
+    "build": "npx slsberry",
+    "doc": "npx slsberry",
+    "deploy": "npx slsberry && npx sls deploy"
+  }
+}

@@ -1,0 +1,989 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ChatUnderscoregetLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_get"
+      }
+    },
+    "ChatUnderscorehandleStreamLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_handleStream"
+      }
+    },
+    "ChatUnderscoreonConnectLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_onConnect"
+      }
+    },
+    "ChatUnderscoreonDefaultLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_onDefault"
+      }
+    },
+    "ChatUnderscoreonDisconnectLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_onDisconnect"
+      }
+    },
+    "ChatUnderscoreputLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_put"
+      }
+    },
+    "ChatUnderscoregetLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/get.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_get",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscoregetLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "ChatUnderscorehandleStreamLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/handleStream.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_handleStream",
+        "MemorySize": 1024,
+        "Timeout": 100,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscorehandleStreamLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "ChatUnderscoreonConnectLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/onConnect.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_onConnect",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscoreonConnectLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "ChatUnderscoreonDefaultLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/onDefault.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_onDefault",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscoreonDefaultLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "ChatUnderscoreonDisconnectLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/onDisconnect.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_onDisconnect",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscoreonDisconnectLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "ChatUnderscoreputLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "590184123114-serverless-deploys",
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+        },
+        "Handler": "src/lambda/chat/put.handler",
+        "Runtime": "nodejs20.x",
+        "FunctionName": "my-chat-lambda_dev_1_chat_put",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Tags": [
+          {
+            "Key": "Service",
+            "Value": "my-chat-lambda"
+          },
+          {
+            "Key": "Environment",
+            "Value": "dev"
+          }
+        ],
+        "Environment": {
+          "Variables": {
+            "service": "my-chat-lambda",
+            "version": "1",
+            "stage": "dev",
+            "region": "ap-northeast-2",
+            "app": "backend",
+            "api_gateway_id": {
+              "Ref": "HttpApi"
+            },
+            "socket_api_gateway_id": {
+              "Ref": "WebsocketsApi"
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "DefaultRole",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "ChatUnderscoreputLogGroup",
+        "DefaultRole"
+      ]
+    },
+    "WebsocketsApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": "dev-1-my-chat-lambda-websockets",
+        "RouteSelectionExpression": "$request.body.action",
+        "Description": "Serverless Websockets",
+        "ProtocolType": "WEBSOCKET"
+      }
+    },
+    "ChatUnderscoreonConnectWebsocketsIntegration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ChatUnderscoreonConnectLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        }
+      }
+    },
+    "ChatUnderscoreonDefaultWebsocketsIntegration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ChatUnderscoreonDefaultLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        }
+      }
+    },
+    "ChatUnderscoreonDisconnectWebsocketsIntegration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "ChatUnderscoreonDisconnectLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        }
+      }
+    },
+    "ChatUnderscoreonConnectLambdaPermissionWebsockets": {
+      "Type": "AWS::Lambda::Permission",
+      "DependsOn": [
+        "WebsocketsApi",
+        "ChatUnderscoreonConnectLambdaFunction"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscoreonConnectLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com"
+      }
+    },
+    "ChatUnderscoreonDefaultLambdaPermissionWebsockets": {
+      "Type": "AWS::Lambda::Permission",
+      "DependsOn": [
+        "WebsocketsApi",
+        "ChatUnderscoreonDefaultLambdaFunction"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscoreonDefaultLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com"
+      }
+    },
+    "ChatUnderscoreonDisconnectLambdaPermissionWebsockets": {
+      "Type": "AWS::Lambda::Permission",
+      "DependsOn": [
+        "WebsocketsApi",
+        "ChatUnderscoreonDisconnectLambdaFunction"
+      ],
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscoreonDisconnectLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com"
+      }
+    },
+    "SconnectWebsocketsRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "RouteKey": "$connect",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "ChatUnderscoreonConnectWebsocketsIntegration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "SdefaultWebsocketsRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "RouteKey": "$default",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "ChatUnderscoreonDefaultWebsocketsIntegration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "SdisconnectWebsocketsRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "RouteKey": "$disconnect",
+        "AuthorizationType": "NONE",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "ChatUnderscoreonDisconnectWebsocketsIntegration"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "WebsocketsDeploymentStage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "StageName": "dev-1",
+        "Description": "Serverless Websockets",
+        "DeploymentId": {
+          "Ref": "WebsocketsDeploymentAvDTQQ5y1rNTvgiT4XI5Rcwn7qjw8qPTTRixtBSUI"
+        }
+      }
+    },
+    "WebsocketsDeploymentAvDTQQ5y1rNTvgiT4XI5Rcwn7qjw8qPTTRixtBSUI": {
+      "Type": "AWS::ApiGatewayV2::Deployment",
+      "DependsOn": [
+        "SconnectWebsocketsRoute",
+        "SdefaultWebsocketsRoute",
+        "SdisconnectWebsocketsRoute"
+      ],
+      "Properties": {
+        "ApiId": {
+          "Ref": "WebsocketsApi"
+        },
+        "Description": "Serverless Websockets"
+      }
+    },
+    "ChatUnderscorehandleStreamEventSourceMappingDynamodbChatappChatMessages": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "DefaultRole"
+      ],
+      "Properties": {
+        "BatchSize": 10,
+        "Enabled": true,
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "chatappChatMessages",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscorehandleStreamLambdaFunction",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      }
+    },
+    "HttpApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": "dev-1-my-chat-lambda",
+        "ProtocolType": "HTTP",
+        "Tags": {
+          "Service": "my-chat-lambda",
+          "Environment": "dev"
+        },
+        "CorsConfiguration": {
+          "AllowHeaders": [
+            "Content-Type",
+            "X-Amz-Date",
+            "Authorization",
+            "X-Api-Key",
+            "X-Amz-Security-Token",
+            "X-Amz-User-Agent",
+            "X-Amzn-Trace-Id"
+          ],
+          "AllowMethods": [
+            "OPTIONS",
+            "GET",
+            "PUT"
+          ],
+          "AllowOrigins": [
+            "*"
+          ]
+        }
+      }
+    },
+    "HttpApiStage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
+        },
+        "Tags": {
+          "Service": "my-chat-lambda",
+          "Environment": "dev"
+        }
+      }
+    },
+    "ChatUnderscoregetLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscoregetLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationChatUnderscoreget": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "ChatUnderscoregetLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRouteGetDevChat": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "GET /dev/chat",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationChatUnderscoreget"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationChatUnderscoreget"
+    },
+    "ChatUnderscoreputLambdaPermissionHttpApi": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ChatUnderscoreputLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "HttpApi"
+              },
+              "/*"
+            ]
+          ]
+        }
+      }
+    },
+    "HttpApiIntegrationChatUnderscoreput": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "ChatUnderscoreputLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 30000
+      }
+    },
+    "HttpApiRoutePutDevChat": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "PUT /dev/chat",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationChatUnderscoreput"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationChatUnderscoreput"
+    },
+    "DefaultRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "backend-dev-1-DefaultLambdaExcutionRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "myPolicyName",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:*",
+                    "ssm:*",
+                    "execute-api:*",
+                    "sqs:*"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "chatappChatMessages": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "my-chat-lambda-dev-chat-messages-1",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "room_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "timestamp",
+            "AttributeType": "N"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "room_id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "timestamp",
+            "KeyType": "RANGE"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      }
+    },
+    "chatappChatUserlist": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "my-chat-lambda-dev-chat-userlist-1",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "connection_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "room_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "user_id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "connection_id",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "room_id-user_id-index",
+            "KeySchema": [
+              {
+                "AttributeName": "room_id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "user_id",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": "my-chat-lambda-dev-1-serverless-ServiceEndpoint",
+      "Export": {
+        "Name": "my-chat-lambda-dev-1-serverless-ServiceEndpoint"
+      }
+    },
+    "ServiceEndpointWebsocket": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "wss://",
+            {
+              "Ref": "WebsocketsApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev-1"
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "sls-my-chat-lambda-dev-1-ServiceEndpointWebsocket"
+      }
+    },
+    "HttpApiId": {
+      "Description": "Id of the HTTP API",
+      "Value": {
+        "Ref": "HttpApi"
+      },
+      "Export": {
+        "Name": "my-chat-lambda-dev-1-serverless-HttpApiId"
+      }
+    },
+    "HttpApiUrl": {
+      "Description": "URL of the HTTP API",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "HttpApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            }
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "my-chat-lambda-dev-1-serverless-HttpApiUrl"
+      }
+    }
+  }
+}
