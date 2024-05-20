@@ -1,0 +1,43 @@
+.chat-room-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #282c34;
+}
+
+.chat-room-content {
+  width: 100%;
+  max-width: 360px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  color: #333;
+}
+
+.chat-room-list {
+  list-style: none; /* 목록의 점 제거 */
+  padding: 0; /* 내부 패딩 제거 */
+  margin: 0; /* 외부 마진 제거 */
+}
+
+.chat-room-item {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 10px; /* 항목 간의 마진 조정 */
+  padding: 12px; /* 항목 내부 패딩 조정 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chat-room-item:hover {
+  background-color: #e2e2e2; /* 호버 시 배경색 변경 */
+}
+
+.chat-room-link {
+  text-decoration: none; /* 링크 밑줄 제거 */
+  color: inherit; /* 부모 요소의 글자색 상속 */
+  display: block;
+}
