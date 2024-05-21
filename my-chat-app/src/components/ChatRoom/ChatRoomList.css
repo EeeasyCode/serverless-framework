@@ -1,0 +1,72 @@
+.chat-room-list {
+    list-style: none; /* 목록의 점 제거 */
+    padding: 0; /* 내부 패딩 제거 */
+    margin: 0; /* 외부 마진 제거 */
+  }
+  
+  .chat-room-item {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 4px 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    transform: scale(1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .chat-room-item:hover {
+    background-color: #e2e2e2;
+    transform: scale(1.05);
+  }
+  
+  .chat-room-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+  }
+  
+  .chat-room-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .chat-room-name {
+    display: flex;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .chat-room-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .chat-room-master, .chat-room-date {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .create-room-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #61dafb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .create-room-button:hover {
+    background-color: #4095c6;
+  }
+  

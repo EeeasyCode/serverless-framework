@@ -36,7 +36,6 @@ const apiSpec = {
 exports.apiSpec = apiSpec;
 
 async function handler(inputObject, event) {
-    console.log(event);
     try {
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);

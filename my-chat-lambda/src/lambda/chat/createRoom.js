@@ -2,6 +2,7 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 var ddbUtil = require("../lib/ddbUtilv3");
+var moment = require('moment');
 
 const apiSpec = {
     category: 'chat',
@@ -28,7 +29,8 @@ async function handler(event) {
     const chatRoom = {
         room_id,
         master_user: user_name,
-        created_at: new Date().toISOString()
+        created_at: moment().format('MM-DD HH:mm').toString()
+        
     };
 
     try {
