@@ -25,7 +25,8 @@ const apiSpec = {
                 type: 'object',
                 properties: {
                     room_id: { type: 'String', desc: '채팅방 아이디' },
-                    name: { type: 'String', desc: '채팅방 이름' },
+                    master_user: { type: 'String', desc: '채팅방 이름' },
+                    created_at: { type: 'Date', desc: '채팅방 생성일시' }
                 },
             },
         },
@@ -39,7 +40,7 @@ async function handler(inputObject, event) {
     try {
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
-    const data = await ddbUtil.scan(docClient, "chat-messages");
+    const data = await ddbUtil.scan(docClient, "chat-room-list");
 
     return {
         status: 200,

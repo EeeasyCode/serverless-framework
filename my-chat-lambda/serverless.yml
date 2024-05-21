@@ -67,6 +67,21 @@ resources:
                     - execute-api:*
                     - sqs:*
                   Resource: '*'
+    chatappChatRoomList:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${env:STAGE, "dev"}-chat-room-list-${env:VER, "1"}
+        AttributeDefinitions:
+          - AttributeName: room_id
+            AttributeType: S
+          - AttributeName: created_at
+            AttributeType: S
+        KeySchema:
+          - AttributeName: room_id
+            KeyType: HASH
+          - AttributeName: created_at
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
     chatappChatMessages:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -121,20 +136,6 @@ resources:
         Name: ${self:provider.stackName}-HttpApiId
 custom: null
 functions:
-  chat_get:
-    name: ${self:service}_dev_1_chat_get
-    handler: src/lambda/chat/get.handler
-    events:
-      - httpApi:
-          path: /dev/chat
-          method: get
-  chat_getRoom:
-    name: ${self:service}_dev_1_chat_getRoom
-    handler: src/lambda/chat/getRoom.handler
-    events:
-      - httpApi:
-          path: /dev/chatRoom
-          method: get
   chat_handleStream:
     name: ${self:service}_dev_1_chat_handleStream
     handler: src/lambda/chat/handleStream.handler
@@ -171,3 +172,24 @@ functions:
       - httpApi:
           path: /dev/chat
           method: put
+  chat_getRoom:
+    name: ${self:service}_dev_1_chat_getRoom
+    handler: src/lambda/chat/getRoom.handler
+    events:
+      - httpApi:
+          path: /dev/chatRoom
+          method: get
+  chat_get:
+    name: ${self:service}_dev_1_chat_get
+    handler: src/lambda/chat/get.handler
+    events:
+      - httpApi:
+          path: /dev/chat
+          method: get
+  chat_createRoom:
+    name: ${self:service}_dev_1_chat_createRoom
+    handler: src/lambda/chat/createRoom.handler
+    events:
+      - httpApi:
+          path: /dev/chat/createRoom
+          method: post

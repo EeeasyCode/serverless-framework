@@ -4,7 +4,8 @@ import './ChatRoomPage.css';
 
 interface ChatRoom {
     room_id: string;
-    timestamp: string;
+    master_user: string;
+    created_at: string;
 }
 
 const ChatRoomPage: React.FC = () => {
@@ -25,8 +26,16 @@ const ChatRoomPage: React.FC = () => {
                     <ul className="chat-room-list">
                         {chatRooms.map(room => (
                             <li key={room.room_id} className="chat-room-item">
-                                <Link to={`/chat/${room.room_id}`} className="chat-room-link">{room.room_id}</Link>
-                            </li>
+                            <Link to={`/chat/${room.room_id}`} className="chat-room-link">
+                                <div className="chat-room-info">
+                                    <h3 className="chat-room-name">{room.room_id}</h3>
+                                    <div className="chat-room-details">
+                                        <p className="chat-room-master">방장: {room.master_user}</p>
+                                        <p className="chat-room-date">{room.created_at}</p>
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
                         ))}
                     </ul>
                 ) : (
