@@ -57,6 +57,12 @@
               "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_get"
             }
           },
+          "ChatUnderscoregetRoomLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/my-chat-lambda_dev_1_chat_getRoom"
+            }
+          },
           "ChatUnderscorehandleStreamLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
@@ -92,7 +98,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/get.handler",
               "Runtime": "nodejs20.x",
@@ -136,12 +142,61 @@
               "DefaultRole"
             ]
           },
+          "ChatUnderscoregetRoomLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "590184123114-serverless-deploys",
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
+              },
+              "Handler": "src/lambda/chat/getRoom.handler",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "my-chat-lambda_dev_1_chat_getRoom",
+              "MemorySize": 1024,
+              "Timeout": 29,
+              "Tags": [
+                {
+                  "Key": "Service",
+                  "Value": "my-chat-lambda"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "dev"
+                }
+              ],
+              "Environment": {
+                "Variables": {
+                  "service": "my-chat-lambda",
+                  "version": "1",
+                  "stage": "dev",
+                  "region": "ap-northeast-2",
+                  "app": "backend",
+                  "api_gateway_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"api_gateway_id\"]"
+                  },
+                  "socket_api_gateway_id": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"socket_api_gateway_id\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "DefaultRole",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "ChatUnderscoregetRoomLogGroup",
+              "DefaultRole"
+            ]
+          },
           "ChatUnderscorehandleStreamLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/handleStream.handler",
               "Runtime": "nodejs20.x",
@@ -190,7 +245,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onConnect.handler",
               "Runtime": "nodejs20.x",
@@ -239,7 +294,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onDefault.handler",
               "Runtime": "nodejs20.x",
@@ -288,7 +343,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onDisconnect.handler",
               "Runtime": "nodejs20.x",
@@ -337,7 +392,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/put.handler",
               "Runtime": "nodejs20.x",
@@ -769,6 +824,78 @@
             },
             "DependsOn": "HttpApiIntegrationChatUnderscoreget"
           },
+          "ChatUnderscoregetRoomLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ChatUnderscoregetRoomLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationChatUnderscoregetRoom": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ChatUnderscoregetRoomLambdaPermissionHttpApi\"][\"Properties\"][\"FunctionName\"]"
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteGetDevChatroom": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "GET /dev/chatRoom",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationChatUnderscoregetRoom"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationChatUnderscoregetRoom"
+          },
           "ChatUnderscoreputLambdaPermissionHttpApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
@@ -1057,6 +1184,25 @@
         "runtime": "nodejs20.x",
         "vpc": {}
       },
+      "chat_getRoom": {
+        "name": "my-chat-lambda_dev_1_chat_getRoom",
+        "handler": "src/lambda/chat/getRoom.handler",
+        "events": [
+          {
+            "httpApi": {
+              "path": "/dev/chatRoom",
+              "method": "get"
+            },
+            "resolvedMethod": "GET",
+            "resolvedPath": "/dev/chatRoom"
+          }
+        ],
+        "package": {},
+        "memory": 1024,
+        "timeout": 29,
+        "runtime": "nodejs20.x",
+        "vpc": {}
+      },
       "chat_handleStream": {
         "name": "my-chat-lambda_dev_1_chat_handleStream",
         "handler": "src/lambda/chat/handleStream.handler",
@@ -1315,7 +1461,7 @@
     "artifact": "/Users/leechangmin/Desktop/Khan/serverless-image-upload/my-chat-lambda/.serverless/my-chat-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z",
+    "artifactDirectoryName": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716256778269-2024-05-21T01:59:38.269Z",
     "artifact": "my-chat-lambda.zip"
   }
 }

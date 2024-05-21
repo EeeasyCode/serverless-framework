@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './ChatRoomPage.css'; // CSS 파일 임포트
+import './ChatRoomPage.css';
 
 interface ChatRoom {
-    id: string;
-    name: string;
+    room_id: string;
+    timestamp: string;
 }
 
 const ChatRoomPage: React.FC = () => {
-    const [chatRooms, setChatRooms] = useState<ChatRoom[]>([
-        { id: '1', name: '채팅방 1' },
-        { id: '2', name: '채팅방 2' }
-    ]);
+    const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+
+    useEffect(() => {
+        fetch(' https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chatRoom') // 채팅방 목록 API URL
+            .then(response => response.json())
+            .then(data => setChatRooms(data))
+            .catch(error => console.error('Error fetching chat rooms:', error));
+    }, []);
 
     return (
         <div className="chat-room-container">
             <div className="chat-room-content">
                 <h1>채팅방 목록</h1>
-                <ul className="chat-room-list">
-                    {chatRooms.map(room => (
-                        <li key={room.id} className="chat-room-item">
-                            <Link to={`/chat/${room.id}`} className="chat-room-link">{room.name}</Link>
-                        </li>
-                    ))}
-                </ul>
+                {chatRooms.length > 0 ? (
+                    <ul className="chat-room-list">
+                        {chatRooms.map(room => (
+                            <li key={room.room_id} className="chat-room-item">
+                                <Link to={`/chat/${room.room_id}`} className="chat-room-link">{room.room_id}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>채팅방이 없습니다.</p>
+                )}
             </div>
         </div>
     );

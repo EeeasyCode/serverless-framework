@@ -89,3 +89,7 @@ async function handler(inputObject, event) {
         response: data.Items
     };
 }
+
+exports.handler = async (event, context) => {
+    return await handleHttpRequest(event, context, apiSpec, handler);
+};

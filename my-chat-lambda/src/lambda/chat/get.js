@@ -58,3 +58,7 @@ async function handler(inputObject, event) {
         lastEvaluatedKey: JSON.stringify(data.LastEvaluatedKey) // 다음 페이지를 위한 키
     };
 }
+
+exports.handler = async (event, context) => {
+    return await handleHttpRequest(event, context, apiSpec, handler);
+};

@@ -40,7 +40,7 @@ async function handler(inputObject, event) {
     const { room_id, user_id } = inputObject;
     const timestamp = moment().valueOf();
     const connection_id = event.requestContext.connectionId;
-
+    
     const userItem = {
         room_id,
         connection_id,
@@ -75,3 +75,4 @@ async function handler(inputObject, event) {
 exports.handler = async (event, context) => {
     return await handleHttpRequest(event, context, apiSpec, handler);
 };
+

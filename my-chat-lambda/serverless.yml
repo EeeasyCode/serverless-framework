@@ -128,6 +128,13 @@ functions:
       - httpApi:
           path: /dev/chat
           method: get
+  chat_getRoom:
+    name: ${self:service}_dev_1_chat_getRoom
+    handler: src/lambda/chat/getRoom.handler
+    events:
+      - httpApi:
+          path: /dev/chatRoom
+          method: get
   chat_handleStream:
     name: ${self:service}_dev_1_chat_handleStream
     handler: src/lambda/chat/handleStream.handler
