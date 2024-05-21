@@ -1,9 +1,11 @@
 
 const { DynamoDBClient, PutItemCommand, DeleteItemCommand } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
-var moment = require('moment');
 const { handleHttpRequest } = require('slsberry');
+
+var moment = require('moment');
 var ddbUtil = require("../lib/ddbUtilv3");
+
 const apiSpec = {
     category: 'chat',
     event: [
