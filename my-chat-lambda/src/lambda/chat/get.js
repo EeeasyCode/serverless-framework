@@ -37,24 +37,24 @@ exports.apiSpec = apiSpec;
 
 async function handler(inputObject, event) {
     console.log(event);
-    const { room_id } = inputObject;
+    const { room_id, lastEvaluatedKey } = inputObject;
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
 
     let data = undefined;
-    //그냥 모든 채팅을 가져온다. 
-    //주의 : 최적화가 안되어 있어 채팅이 너무 많아지면 다 불러오지 못하기 때문에 적절한 처리 필요
+    const params = {
+        Limit: 10, // 한 번에 가져올 아이템의 수를 제한
+        ExclusiveStartKey: lastEvaluatedKey ? JSON.parse(lastEvaluatedKey) : undefined
+    };
     try {
-        data = await ddbUtil.query(docClient, "chat-messages", ["room_id"], [room_id])
+        data = await ddbUtil.query(docClient, "chat-messages", ["room_id"], [room_id], params)
     } catch (e) {
         console.error(e);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
     return {
         status: 200,
-        response: data.Items
+        response: data.Items,
+        lastEvaluatedKey: JSON.stringify(data.LastEvaluatedKey) // 다음 페이지를 위한 키
     };
-};
-exports.handler = async (event, context) => {
-    return await handleHttpRequest(event, context, apiSpec, handler);
-};
+}

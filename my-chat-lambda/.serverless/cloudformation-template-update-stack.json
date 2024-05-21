@@ -43,7 +43,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/get.handler",
         "Runtime": "nodejs20.x",
@@ -92,7 +92,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/handleStream.handler",
         "Runtime": "nodejs20.x",
@@ -141,7 +141,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/onConnect.handler",
         "Runtime": "nodejs20.x",
@@ -190,7 +190,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/onDefault.handler",
         "Runtime": "nodejs20.x",
@@ -239,7 +239,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/onDisconnect.handler",
         "Runtime": "nodejs20.x",
@@ -288,7 +288,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "590184123114-serverless-deploys",
-          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716214072539-2024-05-20T14:07:52.539Z/my-chat-lambda.zip"
+          "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716252836546-2024-05-21T00:53:56.546Z/my-chat-lambda.zip"
         },
         "Handler": "src/lambda/chat/put.handler",
         "Runtime": "nodejs20.x",

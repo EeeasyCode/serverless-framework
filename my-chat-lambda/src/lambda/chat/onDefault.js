@@ -35,45 +35,28 @@ const apiSpec = {
 
 exports.apiSpec = apiSpec;
 async function handler(inputObject, event) {
-
-    console.log(event);
     console.log("Received event:", JSON.stringify(event));
     try {
-        // Extract the domain name and stage from the event
-        const domainName = event.requestContext.domainName;
-        const stage = event.requestContext.stage;
-
-        // Create a new API Gateway Management API client
+        const { domainName, stage, connectionId } = event.requestContext;
         const apiGwClient = new ApiGatewayManagementApiClient({
             endpoint: `https://${domainName}/${stage}`
         });
 
-        // Extract the connection ID and the incoming message
-        const connectionId = event.requestContext.connectionId;
-        const body = JSON.parse(event.body);
-        const message = body.message;
+        const { message } = JSON.parse(event.body);
 
-        // Prepare and send the response back to the client
-
+        const responsePayload = JSON.stringify({ data: "pong" });
         await apiGwClient.send(new PostToConnectionCommand({
             ConnectionId: connectionId,
-            Data: JSON.stringify({
-                data: "pong"
-            })
+            Data: responsePayload
         }));
-        // console.log("Message sent");
+
         return { statusCode: 200, body: 'Message sent' };
     } catch (error) {
         console.error("Failed to send message", error);
         return { statusCode: 500, body: 'Failed to send message' };
     }
-
-
-
-
-
-
 };
+
 exports.handler = async (event, context) => {
     return await handleHttpRequest(event, context, apiSpec, handler);
 };

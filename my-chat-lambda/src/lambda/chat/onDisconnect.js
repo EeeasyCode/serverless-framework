@@ -30,12 +30,12 @@ const apiSpec = {
 
 exports.apiSpec = apiSpec;
 async function handler(inputObject, event) {
-  console.log(event)
-  //DynamoDB에서 ConnectionID 삭제
+  console.log(event);
+  // DynamoDB에서 ConnectionID 삭제
   const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
   const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
   try {
-    await ddbUtil.doDelete(docClient, "chat-userlist", { "connection_id": event.requestContext.connectionId })
+    await ddbUtil.doDelete(docClient, "chat-userlist", { "connection_id": event.requestContext.connectionId });
   } catch (e) {
     console.error(e);
     return { predefinedError: apiSpec.errors.unexpected_error };
@@ -50,5 +50,5 @@ async function handler(inputObject, event) {
 }
 
 exports.handler = async (event, context) => {
-  return await handleHttpRequest(event, context, apiSpec, handler);
+  return handleHttpRequest(event, context, apiSpec, handler);
 };

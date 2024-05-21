@@ -38,34 +38,31 @@ const apiSpec = {
 exports.apiSpec = apiSpec;
 
 async function handler(inputObject, event) {
-    console.log(event);
+    console.log("Event received:", event);
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
-    //입력 받은 채팅 레코드를 만들어서
     const now = moment().valueOf();
-    const item = {
+    const chatItem = {
         room_id: inputObject.room_id,
         timestamp: now,
         message: inputObject.text,
         user_id: inputObject.user_id,
         name: inputObject.name,
     };
-    //dynammodb에 넣는다.
+
     try {
-        await ddbUtil.put(docClient, "chat-messages", item);
-    } catch (e) {
-        console.error(e);
+        await ddbUtil.put(docClient, "chat-messages", chatItem);
+    } catch (error) {
+        console.error("Error inserting chat message:", error);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
-    //나머지는 stream이 처리해줄것이다.
 
     return {
         status: 200,
-        response: {
-            result: "ok",
-        }
+        response: { result: "ok" }
     };
 };
+
 exports.handler = async (event, context) => {
-    return await handleHttpRequest(event, context, apiSpec, handler);
+    return handleHttpRequest(event, context, apiSpec, handler);
 };

@@ -15,7 +15,7 @@ const apiSpec = {
     ],
     memory: 2048,
     timeout: 100,
-    desc: '채팅메세지 입력시 처리 : DynamoDB Stream에 의해 트리거',
+    desc: '채팅메세지 입력 시 처리 : DynamoDB Stream에 의해 트리거',
     parameters: {},
     errors: {
         unexpected_error: { status_code: 500, reason: 'unexpected_error' },
@@ -48,56 +48,44 @@ async function handler(inputObject, event) {
     }
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
-    //우선 유저 목록을 불러와서
-    let data = undefined;
+    let data;
     try {
-        data = await ddbUtil.query(docClient, "chat-userlist", ["room_id"], [room_id], { IndexName: 'room_id-user_id-index' })
+        data = await ddbUtil.query(docClient, "chat-userlist", ["room_id"], [room_id], { IndexName: 'room_id-user_id-index' });
     } catch (e) {
         console.error(e);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
     console.log(JSON.stringify(data));
-    //그리고 아까 받아온 유저 목록을 iterate 하면서
+
     const apigwManagementApi = new ApiGatewayManagementApiClient({
         apiVersion: '2018-11-29',
-        region: process.env.region,
+        region: 'ap-northeast-2',
         endpoint: `https://${process.env.socket_api_gateway_id}.execute-api.ap-northeast-2.amazonaws.com/${process.env.stage}-${process.env.version}`,
     });
-    //  console.log(`${process.env.socket_api_gateway_id}.execute-api.ap-northeast-2.amazonaws.com/${process.env.stage}-${process.env.version}`);
-    try {
 
-        //각각 connection id마다 채팅을 던진다.
-        for (const { connection_id } of data.Items) {
-            console.log(connection_id);
-            const dt = { ConnectionId: connection_id, Data: JSON.stringify(item) };
-            try {
-                await apigwManagementApi.send(new PostToConnectionCommand(dt));
-            } catch (e) {
+    const postCommands = data.Items.map(({ connection_id }) => {
+        const postData = { ConnectionId: connection_id, Data: JSON.stringify(item) };
+        return apigwManagementApi.send(new PostToConnectionCommand(postData))
+            .catch(e => {
                 console.log(e);
-
                 if (e instanceof GoneException) {
                     console.log(`Found stale connection, deleting ${connection_id}`);
-                    await ddbUtil.doDelete(docClient, "chat-userlist", { "connection_id": connection_id })
+                    return ddbUtil.doDelete(docClient, "chat-userlist", { "connection_id": connection_id });
                 } else {
-
                     console.error("Error sending message:", e);
                 }
-            }
-        }
+            });
+    });
 
+    try {
+        await Promise.all(postCommands);
     } catch (e) {
-        console.log(e);
+        console.error(e);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
-
-
-
 
     return {
         status: 200,
         response: data.Items
     };
-};
-exports.handler = async (event, context) => {
-    return await handleHttpRequest(event, context, apiSpec, handler);
-};
+}

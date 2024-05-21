@@ -34,49 +34,44 @@ const apiSpec = {
 
 exports.apiSpec = apiSpec;
 async function handler(inputObject, event) {
-
     console.log(event);
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });
     const docClient = DynamoDBDocumentClient.from(dynamoDBClient);
     const { room_id, user_id } = inputObject;
-    const item = {
-        room_id: room_id,
-        connection_id: event.requestContext.connectionId,
-        user_id: user_id,
-        timestamp: moment().valueOf()
-    }
-    try {
-        await ddbUtil.put(docClient, "chat-userlist", item);
-    } catch (e) {
-        console.error(e);
-        return { predefinedError: apiSpec.errors.unexpected_error };
-    }
-    const itemwelcome = {
-        room_id: inputObject.room_id,
-        timestamp: moment().valueOf(),
-        message: `${user_id}님이 입장하셨습니다.`,
-        user_id: `system`,
-        name: `system`,
+    const timestamp = moment().valueOf();
+    const connection_id = event.requestContext.connectionId;
+
+    const userItem = {
+        room_id,
+        connection_id,
+        user_id,
+        timestamp
     };
-    //dynammodb에 넣는다.
+
+    const welcomeMessageItem = {
+        room_id,
+        timestamp,
+        message: `${user_id}님이 입장하셨습니다.`,
+        user_id: 'system',
+        name: 'system'
+    };
+
     try {
-        await ddbUtil.put(docClient, "chat-messages", itemwelcome);
+        await Promise.all([
+            ddbUtil.put(docClient, "chat-userlist", userItem),
+            ddbUtil.put(docClient, "chat-messages", welcomeMessageItem)
+        ]);
     } catch (e) {
         console.error(e);
         return { predefinedError: apiSpec.errors.unexpected_error };
     }
-
-
-
-
 
     return {
         status: 200,
-        response: {
-
-        },
+        response: {}
     };
 };
+
 exports.handler = async (event, context) => {
     return await handleHttpRequest(event, context, apiSpec, handler);
 };
