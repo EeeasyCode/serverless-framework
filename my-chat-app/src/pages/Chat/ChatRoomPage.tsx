@@ -27,7 +27,7 @@ const ChatRoomPage: React.FC = () => {
         const url = 'https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chat/createRoom';
         const data = {
             room_id: roomName,
-            user_name: 'khan'
+            user_name: localStorage.getItem('userEmail')?.split("@")[0]
         };
         fetch(url, {
             method: 'POST',

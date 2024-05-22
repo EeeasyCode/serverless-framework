@@ -12,6 +12,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (login(email, password)) {
+      localStorage.setItem('userEmail', email);
       navigate('/chat-room');
     } else {
       alert('로그인 정보가 올바르지 않습니다.');

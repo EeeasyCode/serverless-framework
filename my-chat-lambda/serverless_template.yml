@@ -10,7 +10,21 @@ provider:
   iam:
     role: DefaultRole
   httpApi:
-    cors: true
+    cors:
+      allowedOrigins:
+        - 'http://localhost:3000'
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      allowedHeaders:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+      allowCredentials: true
   stage: ${env:STAGE, "dev"}
   tags:
     Service: ${self:service}

@@ -13,7 +13,25 @@
         "role": "DefaultRole"
       },
       "httpApi": {
-        "cors": true
+        "cors": {
+          "allowedOrigins": [
+            "http://localhost:3000"
+          ],
+          "allowedMethods": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+          ],
+          "allowedHeaders": [
+            "Content-Type",
+            "X-Amz-Date",
+            "Authorization",
+            "X-Api-Key",
+            "X-Amz-Security-Token"
+          ],
+          "allowCredentials": true
+        }
       },
       "stage": "dev-1",
       "tags": {
@@ -104,7 +122,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/createRoom.handler",
               "Runtime": "nodejs20.x",
@@ -153,7 +171,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/get.handler",
               "Runtime": "nodejs20.x",
@@ -202,7 +220,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/getRoom.handler",
               "Runtime": "nodejs20.x",
@@ -251,7 +269,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/handleStream.handler",
               "Runtime": "nodejs20.x",
@@ -300,7 +318,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onConnect.handler",
               "Runtime": "nodejs20.x",
@@ -349,7 +367,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onDefault.handler",
               "Runtime": "nodejs20.x",
@@ -398,7 +416,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/onDisconnect.handler",
               "Runtime": "nodejs20.x",
@@ -447,7 +465,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "590184123114-serverless-deploys",
-                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z/my-chat-lambda.zip"
+                "S3Key": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z/my-chat-lambda.zip"
               },
               "Handler": "src/lambda/chat/put.handler",
               "Runtime": "nodejs20.x",
@@ -770,23 +788,22 @@
                 "Environment": "dev"
               },
               "CorsConfiguration": {
+                "AllowCredentials": true,
                 "AllowHeaders": [
                   "Content-Type",
                   "X-Amz-Date",
                   "Authorization",
                   "X-Api-Key",
-                  "X-Amz-Security-Token",
-                  "X-Amz-User-Agent",
-                  "X-Amzn-Trace-Id"
+                  "X-Amz-Security-Token"
                 ],
                 "AllowMethods": [
-                  "OPTIONS",
-                  "POST",
                   "GET",
-                  "PUT"
+                  "POST",
+                  "PUT",
+                  "DELETE"
                 ],
                 "AllowOrigins": [
-                  "*"
+                  "http://localhost:3000"
                 ]
               }
             }
@@ -1662,7 +1679,7 @@
     "artifact": "/Users/leechangmin/Desktop/Khan/serverless-image-upload/my-chat-lambda/.serverless/my-chat-lambda.zip"
   },
   "package": {
-    "artifactDirectoryName": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716300780175-2024-05-21T14:13:00.175Z",
+    "artifactDirectoryName": "my-chat-lambda-dev-1-backend/my-chat-lambda/dev-1/1716356127368-2024-05-22T05:35:27.368Z",
     "artifact": "my-chat-lambda.zip"
   }
 }

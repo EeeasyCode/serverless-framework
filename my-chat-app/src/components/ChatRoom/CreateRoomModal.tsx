@@ -21,7 +21,7 @@ const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
     return (
         <div className="modal">
             <div className="modal-content">
-            <span onClick={() => setShowModal(false)} className="close-button">&#x2190;</span> {/* 뒤로가기 이모티콘 사용 */}
+            <span onClick={() => setShowModal(false)} className="close-button">&#x2190;</span> 
                 <h2>새 채팅방 생성</h2>
                 <input
                     className="create-room-input"
