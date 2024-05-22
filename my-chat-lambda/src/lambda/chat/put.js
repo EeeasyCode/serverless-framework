@@ -19,7 +19,6 @@ const apiSpec = {
         room_id: { "req": true, "type": "String", "desc": "채팅방 아이디" },
         text: { "req": true, "type": "String", "desc": "text" },
         user_id: { "req": true, "type": "String", "desc": "user_id" },
-        name: { "req": true, "type": "String", "desc": "name" },
     },
     errors: {
         unexpected_error: { status_code: 500, reason: 'unexpected_error' },
@@ -49,7 +48,6 @@ async function handler(inputObject, event) {
         timestamp: now,
         message: inputObject.text,
         user_id: inputObject.user_id,
-        name: inputObject.name,
     };
 
     try {

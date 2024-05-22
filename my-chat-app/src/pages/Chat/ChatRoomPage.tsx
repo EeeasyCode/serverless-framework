@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatRoomList from '../../components/ChatRoom/ChatRoomList';
 import CreateRoomModal from '../../components/ChatRoom/CreateRoomModal';
 import { ChatRoom } from '../../interfaces/ChatRoom';
+
 import './ChatRoomPage.css';
 
 const ChatRoomPage: React.FC = () => {
@@ -11,10 +12,15 @@ const ChatRoomPage: React.FC = () => {
 
     // 채팅방 목록을 불러오는 함수
     const fetchChatRooms = () => {
-        fetch('https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chatRoom')
-            .then(response => response.json())
-            .then(data => setChatRooms(data))
-            .catch(error => console.error('Error fetching chat rooms:', error));
+        const apiUrl = process.env.REACT_APP_CHAT_ROOM_URL;
+        if (apiUrl) {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => setChatRooms(data))
+                .catch(error => console.error('Error fetching chat rooms:', error));
+        } else {
+            console.error('API URL is undefined');
+        }
     };
 
     // 컴포넌트 마운트 시 채팅방 목록 불러오기
@@ -24,14 +30,15 @@ const ChatRoomPage: React.FC = () => {
 
     // 채팅방 생성 함수
     const createRoom = () => {
-        const url = 'https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chat/createRoom';
+        const url = process.env.REACT_APP_CREATE_ROOM_URL;
         const data = {
             room_id: roomName,
             user_name: localStorage.getItem('userEmail')?.split("@")[0]
         };
-        fetch(url, {
-            method: 'POST',
-            headers: {
+        if (url) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
@@ -47,6 +54,9 @@ const ChatRoomPage: React.FC = () => {
             console.error('Error creating room:', error);
             alert(`채팅방 생성에 실패했습니다: ${error.message}`);
         });
+    } else {
+        console.error('API URL is undefined');
+    }
     };
 
     return (

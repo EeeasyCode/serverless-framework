@@ -37,13 +37,12 @@ async function handler(inputObject, event) {
     const timestamp = _event.dynamodb.NewImage.timestamp.N;
     const message = _event.dynamodb.NewImage.message.S;
     const user_id = _event.dynamodb.NewImage.user_id.S;
-    const name = _event.dynamodb.NewImage.name.S;
+    
     const item = {
         room_id: room_id,
         timestamp: timestamp,
         message: message,
         user_id: user_id,
-        name: name
 
     }
     const dynamoDBClient = new DynamoDBClient({ region: "ap-northeast-2" });

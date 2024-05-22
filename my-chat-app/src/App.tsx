@@ -7,7 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import RegisterPage from './pages/Register/RegisterPage';
 import MainPage from './pages/Main/MainPage';
 import ChatRoomPage from './pages/Chat/ChatRoomPage';
-import ChatRoom from './pages/Chat/ChatRoom';
+import ChatPage from './pages/Chat/ChatPage';
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
             path="/chat-room/:roomId"
             element={
               <ProtectedRoute>
-                <ChatRoom />
+                <ChatPage />
               </ProtectedRoute>
             }
           />

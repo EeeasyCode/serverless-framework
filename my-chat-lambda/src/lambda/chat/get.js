@@ -26,7 +26,6 @@ const apiSpec = {
                 room_id: { type: 'String', desc: '채팅방 아이디' },
                 timestamp: { type: 'Integer', desc: '타임스탬프' },
                 message: { type: 'String', desc: '메세지' },
-                name: { type: 'String', desc: '이름' },
                 user_id: { type: 'String', desc: '유저아이디' },
             },
         },

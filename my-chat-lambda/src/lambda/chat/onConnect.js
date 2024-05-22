@@ -53,7 +53,6 @@ async function handler(inputObject, event) {
         timestamp,
         message: `${user_id}님이 입장하셨습니다.`,
         user_id: 'system',
-        name: 'system'
     };
 
     try {

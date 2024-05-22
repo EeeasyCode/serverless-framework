@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import './ChatPage.css';
 
 class ChatRoom extends Component {
   state = {
@@ -19,7 +20,7 @@ class ChatRoom extends Component {
 
     const result = await axios({
       method: "GET",
-      url: `https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chat`,
+      url: process.env.REACT_APP_GET_CHAT_URL,
       params: { room_id: roomId },
     });
 
@@ -29,7 +30,7 @@ class ChatRoom extends Component {
   connectToWebSocket = () => {
     const { userId, roomId } = this.state;
     if (!this.websocket || this.websocket.readyState === WebSocket.CLOSED) {
-      const websocketUrl = `wss://0fxynlv5yg.execute-api.ap-northeast-2.amazonaws.com/dev-1?user_id=${userId}&room_id=${roomId}`;
+      const websocketUrl = `${process.env.REACT_APP_WEB_SOCKET_URL}?user_id=${userId}&room_id=${roomId}`;
       
       this.websocket = new WebSocket(websocketUrl);
   
@@ -72,12 +73,11 @@ class ChatRoom extends Component {
       try {
         const response = await axios({
           method: 'PUT',
-          url: 'https://sn2vhvatza.execute-api.ap-northeast-2.amazonaws.com/dev/chat',
+          url: process.env.REACT_APP_PUT_CHAT_URL,
           data: {
             room_id: roomId,
             text: inputMessage,
             user_id: userId,
-            name: userId // 사용자 이름도 같이 전송, 필요에 따라 수정 가능
           }
         });
         console.log('메시지 전송 성공:', response.data);
@@ -91,20 +91,11 @@ class ChatRoom extends Component {
   render() {
     const { messages, inputMessage } = this.state;
     return (
-      <div>
+      <div className="chat-room-container">
         <h1>채팅방</h1>
-        <div>
-          {messages.map((message, index) => (
-            <div key={index}>{message}</div>
-          ))}
-        </div>
-        <input
-          type="text"
-          value={inputMessage}
-          onChange={this.handleMessageChange}
-          placeholder="메시지 입력..."
-        />
-        <button onClick={this.handleSendMessage}>보내기</button>
+        <div className="chat-room-content">
+          
+          </div>
       </div>
     );
   }
