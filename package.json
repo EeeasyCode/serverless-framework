@@ -13,6 +13,6 @@
     "test": "npx jest --env=node",
     "build": "npx slsberry",
     "doc": "npx slsberry",
-    "deploy": "npx slsberry && npx sls deploy"
+    "deploy": "npx slsberry && npx sls deploy --aws-profile"
   }
 }
