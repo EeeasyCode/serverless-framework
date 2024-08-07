@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "slsberry": "^0.0.58"
+  },
+  "devDependencies": {
+    "prettier": "3.3.3",
+    "serverless": "3",
+    "serverless-cloudformation-sub-variables": "^0.2.1",
+    "serverless-deployment-bucket": "^1.3.0",
+    "slsberry-tester": "0.0.4"
+  },
+  "scripts": {
+    "test": "npx jest --env=node",
+    "build": "npx slsberry",
+    "doc": "npx slsberry",
+    "deploy": "npx slsberry && npx sls deploy"
+  }
+}

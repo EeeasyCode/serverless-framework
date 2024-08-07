@@ -1,0 +1,88 @@
+frameworkVersion: '3'
+service: hedwig-image-service
+app: hedwig
+useDotenv: true
+provider:
+  name: aws
+  runtime: nodejs20.x
+  deploymentMethod: direct
+  versionFunctions: false
+  iam:
+    role: DefaultRole
+  httpApi:
+    cors: true
+  stage: dev-1
+  tags:
+    Service: ${self:service}
+    Environment: ${env:STAGE, "dev"}
+  stackTags:
+    Service: ${self:service}
+    Environment: ${env:STAGE, "dev"}
+  region: ${opt:region, "ap-northeast-2"}
+  stackName: ${self:service}-${env:STAGE, "dev"}-${env:VER, "1"}-serverless
+  timeout: 29
+  environment:
+    service: ${self:service}
+    version: ${env:VER, "1"}
+    stage: ${env:STAGE, "dev"}
+    region: ${opt:region, "ap-northeast-2"}
+    app: ${self:app}
+  deploymentBucket:
+    name: ${aws:accountId}-serverless-deploys
+    maxPreviousDeploymentArtifacts: 5
+    blockPublicAccess: true
+  deploymentPrefix: ${self:service}-${env:STAGE, "dev"}-${env:VER, "1"}-serviceBackend
+plugins:
+  - serverless-deployment-bucket
+  - serverless-cloudformation-sub-variables
+resources:
+  Resources:
+    DefaultRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: ${self:service}-${env:STAGE, "dev"}-${env:VER, "1"}-LambdaExcutionRole
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+            - Effect: Allow
+              Principal:
+                Service:
+                  - iam.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+          - arn:aws:iam::aws:policy/CloudWatchFullAccess
+        Policies:
+          - PolicyName: hedwig-dev
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - sts:AssumeRole
+                  Resource: '*'
+  Outputs:
+    ServerlessDeploymentBucketName:
+      Export:
+        Name: ${self:provider.stackName}-ServiceEndpoint
+      Value: ${self:provider.stackName}-ServiceEndpoint
+    HttpApiUrl:
+      Export:
+        Name: ${self:provider.stackName}-HttpApiUrl
+    HttpApiId:
+      Export:
+        Name: ${self:provider.stackName}-HttpApiId
+custom: null
+functions:
+  images_get:
+    name: ${self:service}_dev_1_images_get
+    handler: src/lambda/images/get.handler
+    events:
+      - httpApi:
+          path: /dev/images
+          method: get
